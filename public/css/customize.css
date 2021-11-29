@@ -1,0 +1,22 @@
+.btn {
+	outline-color: #8A3FFC;
+}
+
+.btn-primary {
+	background: #8A3FFC;;
+	outline: none;
+	outline-color: #8A3FFC;;
+	box-shadow: none;
+}
+
+.btn-primary:hover {
+	background: #8A3FFC;
+}
+
+.form-control, .form-control:focus {
+	box-shadow: none;
+}
+
+.text-primary {
+	color: #8A3FFC;
+}
