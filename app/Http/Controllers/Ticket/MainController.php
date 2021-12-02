@@ -13,15 +13,29 @@ use App\Models\Category;
 use App\Models\TicketCategory;
 use App\Http\Requests\TicketRequest;
 use App\Http\Requests\BuyTicketRequest;
+use App\Http\Resources\TicketCategoryResource;
 use App\Models\TicketPaymentTemp;
+use Illuminate\Support\Facades\Auth as FacadesAuth;
 use Illuminate\Support\Facades\Http;
 
 class MainController extends Controller
 {
 
+
+    public function tickets($value='')
+    {
+        $tickets = TicketCategory::latest()->get();
+        return response([
+            'status' => true,
+            'message' => 'Ticket Categories',
+            'data' => TicketCategoryResource::collection($tickets)
+        ]);
+    }
+    
+
     public function index($value='')
     {
-        $tickets = Ticket::where('user_id', Auth::user()->id)->get();
+        $tickets = Ticket::where('user_id', FacadesAuth::user()->id)->get();
         return response([
             'status' => true,
             'message' => 'Tickets',

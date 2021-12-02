@@ -10,7 +10,7 @@ class Member extends Model
     use HasFactory;
     protected $table ="members";
 
-    protected $fillable = ['individual_id','subscription_id','amount_paid','expiry_date', 'status', 'organization_id'];
+    protected $fillable = ['individual_id','subscription_id','amount_paid','expiry_date', 'status', 'organization_id', 'access_status'];
 
     
     public function individual()

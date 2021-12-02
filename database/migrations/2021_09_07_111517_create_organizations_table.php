@@ -18,11 +18,13 @@ class CreateOrganizationsTable extends Migration
             $table->string('name');
             $table->bigInteger('user_id')->unsigned();
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->enum('type', ['Free pass', 'Restricted'])->default('Free pass');
             $table->integer('employees')->default(0);
             $table->string('id_card_number');
             $table->timestamps();
         });
     }
+    
 
     /**
      * Reverse the migrations.

@@ -5,7 +5,7 @@ namespace App\Http\Resources;
 use Illuminate\Http\Resources\Json\JsonResource;
 use App\Http\Resources\SimpleUserResource;
 
-class OrganizationResource extends \App\Http\Resources\BaseCustomResource
+class CategoryResource extends \App\Http\Resources\BaseCustomResource
 {
     /**
      * Transform the resource into an array.
@@ -18,14 +18,9 @@ class OrganizationResource extends \App\Http\Resources\BaseCustomResource
         return [
             'id' => $this->id,
             'name' => $this->name,
-            'phone' => $this->phone,
-            'status' => $this->status,
-            'employees' => $this->employees,
-            'type' => $this->type,
-            'type' => $this->type,
+            'description' => $this->description,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
-            'user' => $this->whenLoaded('user', new SimpleUserResource($this->user))
         ];
     }
 }

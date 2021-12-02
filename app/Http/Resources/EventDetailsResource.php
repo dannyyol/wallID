@@ -28,10 +28,14 @@ class EventDetailsResource extends \App\Http\Resources\BaseCustomResource
             'pricing' => $this->pricing,
             'unique_id' => $this->unique_id,
             'description' => $this->description,
-            'event_date' => $this->event_date,
+            'image'=>$this->image,
+            'venue' =>$this->venue,
+            'category' =>  $this->whenLoaded('category', new CategoryResource($this->category)),
+            'start_date' => $this->start_date,
+            'end_date' =>$this->end_date,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
-            'tickets_purchased' => $this->tickets_purchased,
+            // 'tickets_purchased' => $this->tickets_purchased,
             'user' => $this->whenLoaded('user', new UserResource($this->user)),
             'ticketCategories' => $this->whenLoaded('ticketCategories', EventPriceResource::collection($this->ticketCategories))
         ];

@@ -21,7 +21,8 @@ class CreateMembersTable extends Migration
             $table->foreign('subscription_id')->references('id')->on('subscriptions')->onDelete('cascade');
             $table->string('amount_paid');
             $table->date('expiry_date');
-            $table->enum('status', ['approved', 'pending', 'suspended']);
+            $table->enum('access_status', ['Free pass', 'Not paid', 'paid']); //access status defines the type of access the member has in becoming a member in the organization
+            $table->enum('status', ['approved', 'pending', 'declined']);
             $table->bigInteger('organization_id')->unsigned();
             $table->foreign('organization_id')->references('id')->on('organizations')->onDelete('cascade');
             $table->timestamps();

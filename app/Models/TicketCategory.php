@@ -10,4 +10,9 @@ class TicketCategory extends Model
     use HasFactory;
 
     protected $fillable = ['name', 'price', 'event_id'];
+
+
+    public function event(){
+        return $this->belongsTo(Event::class, 'event_id');
+    }
 }

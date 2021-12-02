@@ -27,6 +27,7 @@ class CreateEventsTable extends Migration
             $table->enum('status', ['open', 'closed', 'suspended', 'ongoing'])->default('open');
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->timestamps();
+
         });
     }
 

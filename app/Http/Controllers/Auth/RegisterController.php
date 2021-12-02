@@ -88,13 +88,13 @@ class RegisterController extends Controller
         ]);
     }
 
-    protected function register(Request $request) {
+    protected function register(Request $request)
+    {
 
         $input = $request->all();
         $validator = $this->validator($input);
 
-        if ($validator->passes())
-        {
+        if ($validator->passes()) {
             $user = $this->create($input);
             $individual = Individual::create([
                 'firstname' => $input['firstname'],
@@ -107,14 +107,12 @@ class RegisterController extends Controller
 
             try {
                 $this->sendEmailVerificationNotification($user);
-            } 
-            catch (\Exception $e) {
-                
+            } catch (\Exception $e) {
             }
 
             return redirect('account-created');
         }
-        
+
         return back()->withErrors($validator->errors());
     }
 
@@ -152,16 +150,13 @@ class RegisterController extends Controller
 
             try {
                 $this->sendEmailVerificationNotification($user);
-            } 
-            catch (\Exception $e) {
-                
+            } catch (\Exception $e) {
             }
 
             return response($response);
-
         } catch (\Exception $e) {
 
-            if(isset($user)) 
+            if (isset($user))
                 $user->delete();
 
             throw $e;
@@ -174,10 +169,11 @@ class RegisterController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    private function idCardNumber($name){
+    private function idCardNumber($name)
+    {
         $_name = strtoupper(substr($name, 0, 3));
-        $random_number =random_int(100000, 999999);
-        $idcardnumber = $_name . '-' .$random_number;
+        $random_number = random_int(100000, 999999);
+        $idcardnumber = $_name . '-' . $random_number;
         return $idcardnumber;
     }
 
@@ -186,19 +182,22 @@ class RegisterController extends Controller
         try {
 
             $request->validated();
-            
+
             $user = User::create([
                 'type' => 'organization',
                 'email' => $request->email,
                 'username' => $request->name,
-                'password' => Hash::make($request->password)]);
+                'password' => Hash::make($request->password)
+            ]);
 
             $org = Organization::create([
                 'name' => $request->input('name'),
                 'user_id' => $user->id,
                 'phone' => $request->phone,
-                'id_card_number'=> $this->idCardNumber($request->name),
-                'employees' => $request->input('employees')]);
+                'id_card_number' => $this->idCardNumber($request->name),
+                'employees' => $request->input('employees'),
+                'type' => $request->type
+            ]);
 
             $token = $this->createAuthToken($request->email, $request->password);
             $response = [
@@ -211,15 +210,14 @@ class RegisterController extends Controller
             ];
 
             $this->assignRoles($user, 'organization');
-            
-            return response($response);
 
+            return response($response);
         } catch (\Exception $e) {
-            
-            if(isset($user)) 
+
+            if (isset($user))
                 $user->delete();
 
-            if(isset($org)) 
+            if (isset($org))
                 $org->delete();
 
             throw $e;
@@ -235,27 +233,28 @@ class RegisterController extends Controller
             'password' => 'required|string|confirmed|min:8',
             'phone' => 'required|unique:organizations,phone',
         ]);
-     
+
         $user = User::create([
             'type' => 'organization',
             'email' => $request->email,
             'username' => $request->name,
-            'password' => Hash::make($request->password)]);
+            'password' => Hash::make($request->password)
+        ]);
 
         $org = Organization::create([
             'name' => $request->name,
             'user_id' => $user->id,
             'phone' => $request->phone,
-            'id_card_number'=> $this->idCardNumber($request->name),
-            'employees' => $request->employees
+            'id_card_number' => $this->idCardNumber($request->name),
+            'employees' => $request->employees,
+            'type' => $request->type
+
         ]);
         $this->assignRoles($user, 'organization');
 
         try {
             $this->sendEmailVerificationNotification($user);
-        } 
-        catch (\Exception $e) {
-            
+        } catch (\Exception $e) {
         }
 
         return redirect('login')
@@ -274,7 +273,7 @@ class RegisterController extends Controller
 
     public function verifyEmail(Request $request)
     {
-        if (! $request->hasValidSignature()) {
+        if (!$request->hasValidSignature()) {
             abort(401);
         }
 
@@ -288,7 +287,4 @@ class RegisterController extends Controller
 
         return redirect()->to('login');
     }
-
-
-
 }

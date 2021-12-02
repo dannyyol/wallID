@@ -27,8 +27,6 @@ class MainController extends Controller
         return $this->jsonPaginatedResponse('Organizations', OrganizationResource::collection($orgs));
     }
 
-
-
     /**
      * Store a newly created resource in storage.
      *

@@ -49,6 +49,7 @@ Route::group(['middleware' => ['cors', 'json.response']], function () {
         // Ticketing
         Route::prefix('tickets')->group(function () {
             Route::get('/', 'Ticket\MainController@index');
+            Route::get('/categories', 'Ticket\MainController@tickets');
             Route::post('/', 'Ticket\MainController@store');
             Route::post('/buy', 'Ticket\MainController@buy');
         });
@@ -127,6 +128,7 @@ Route::group(['middleware' => ['cors', 'json.response']], function () {
 
             Route::get('/{id}/requests', 'Events\MainController@eventRequests');
             Route::get('/requests/{id}/{status}', 'Events\MainController@updateRequestStatus');
+            Route::get('/categories', 'Events\MainController@categories');
 
             Route::get('/{id}/share', 'Events\MainController@shareEvent');
             Route::get('/export', 'Events\MainController@exportEvents');

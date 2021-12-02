@@ -28,6 +28,7 @@ use App\Models\EventRequest as Invitation;
 use App\Handlers\NotificationHandler;
 use App\Handlers\EmailHandler;
 use App\Http\Resources\NotificationResource;
+use App\Models\Category;
 use Exception;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
@@ -56,7 +57,6 @@ class MainController extends Controller
             'data' => EventResource::collection($events)
         ]);
 
-        return;
     }
 
     /**
@@ -94,9 +94,7 @@ class MainController extends Controller
                 'start_date' => $request->start_date,
                 'end_date' => $request->end_date,
                 'category_id' => $request->category_id,
-
                 'unique_id' => $this->generateUniq(),
-
                 'description' => $request->description
             ]);
 
@@ -173,9 +171,7 @@ class MainController extends Controller
         }
 
         try {
-
             $event->update([
-
                 'name' => $request->name,
                 'type' => $request->type,
                 'venue' => $request->venue,
@@ -197,7 +193,6 @@ class MainController extends Controller
                 foreach ($request->ticketCategories as $key => $row) {
                     $data['name'] = $row['name'];
                     $data['price'] = $row['price'];
-
                     TicketCategory::where('event_id', $event->id)->update([
                         'name' => $row['name'],
                         'price' => $row['price'],
@@ -212,7 +207,6 @@ class MainController extends Controller
                 'data' => new SimpleEventResource($event)
             ]);
         } catch (Exception $e) {
-            dd($e->getMessage());
             return response([
                 'status' => false,
                 'message' => 'Event could not be updated',
@@ -356,9 +350,7 @@ class MainController extends Controller
 
     public function upcomingEvents()
     {
-
-        $events = Event::where('status', 'open')->where('
-        ', '>', date('Y-m-d'))->latest()->paginate(10);
+        $events = Event::where('status', 'open')->where('start_date', '>', date('Y-m-d'))->latest()->paginate(10);
         return response([
             'status' => true,
             'message' => 'Events',
@@ -379,4 +371,18 @@ class MainController extends Controller
             return;
         }
     }
+
+
+    public function categories()
+    {
+        $categories = Category::all();
+        return response([
+            'status' => true,
+            'message' => 'categories',
+            'data' => $categories
+        ]);
+    }
+
+
+
 }

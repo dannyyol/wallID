@@ -26,6 +26,8 @@ class MemberResource extends \App\Http\Resources\BaseCustomResource
             // 'current_plan_subscribed'=> $this->where('expiry_date', '>', date('Y-m-d'))->where('individual_id', $this->individual_id)->get(),
             // 'subscription_due' => $this->where('expiry_date', '>', date('Y-m-d'))->where('individual_id', $this->individual_id),
             // 'last_subscription_date' =>$this->latest(),
+                        // 'last_subscription_date' =>$this->latest(),
+            'access_status' => $this->access_status,
             'status' => $this->status,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,

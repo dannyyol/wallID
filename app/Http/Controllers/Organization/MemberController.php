@@ -51,14 +51,22 @@ class MemberController extends Controller
     {
         $request->validated();
 
+        $org = Auth::user()->organization;
+        if($org->type  == 'Restricted'){
+            $access_type = 'Not paid';
+        }else if($org->type  == 'Free pass'){
+            $access_type = 'Free pass';
+        } 
+
         try {
             $member = Member::firstOrCreate([
                 'individual_id' => $request->individual_id,
-                'organization_id' => Auth::user()->organization->id,
+                'organization_id' => $org->id,
                 'status' => $request->status,
                 'amount_paid' => $request->amount_paid,
                 'expiry_date' => $request->expiry_date,
                 'subscription_id' => $request->subscription_id,
+                'access_type' => $access_type
             ]);
 
             return response([

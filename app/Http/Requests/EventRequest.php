@@ -30,7 +30,6 @@ class EventRequest extends \App\Http\Requests\BaseCustomRequest
             'end_date' => 'required',
             'start_date' => 'required',
             'isFree' => 'required',
-            'pricing' => 'required',
             'price' => 'required_if:pricing,sinple',
             'ticketCategories' => 'required_if:pricing,multiple',
             'description' => 'required|string',
